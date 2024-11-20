@@ -36,10 +36,14 @@ var npc_scene: PackedScene = preload("res://scenes/npc_agent.tscn")
 var task_scene: PackedScene = preload("res://scenes/task.tscn")
 
 
+func _ready() -> void:
+	var viewport_rect = get_viewport_rect().size
+	spawn_tasks(viewport_rect)
+
+
 func start_game():
 	var viewport_rect = get_viewport_rect().size
 	spawn_npcs(viewport_rect)
-	spawn_tasks(viewport_rect)
 
 
 func _on_button_pressed() -> void:
