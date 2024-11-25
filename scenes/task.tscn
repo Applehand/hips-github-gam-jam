@@ -14,3 +14,6 @@ script = ExtResource("1_s4nxf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_2jxyq")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

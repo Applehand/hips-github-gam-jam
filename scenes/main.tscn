@@ -4,8 +4,8 @@
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_0u1bh")
-num_npcs = 7
-num_tasks = 10
+num_npcs = 25
+num_tasks = 30
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
