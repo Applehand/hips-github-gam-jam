@@ -2,6 +2,11 @@ extends Node2D
 
 var character_names = [
 	"Arden",
+	"Allyn",
+	"Blythe",
+	"Cira",
+	"Anya",
+	"Valyn",
 	"Kael",
 	"Lyric",
 	"Eris",
@@ -9,6 +14,7 @@ var character_names = [
 	"Elyse",
 	"Lily",
 	"Ilyra",
+	"Auric",
 	"Finnian",
 	"Veya",
 	"Thorne",
@@ -17,6 +23,7 @@ var character_names = [
 	"Nimra",
 	"Kieran",
 	"Elowen",
+	"Aurelia",
 	"Draven",
 	"Mireya",
 	"Talon",
@@ -71,13 +78,26 @@ func spawn_npcs(viewport_rect: Vector2):
 
 
 func spawn_tasks(viewport_rect: Vector2):
+	var margin = 35
+	var min_distance = 75
+
 	for i in range(num_tasks):
 		var task = task_scene.instantiate()
+		var task_spawn_pos: Vector2
+		var valid_position = false
+
+		while not valid_position:
+			task_spawn_pos = Vector2(
+				margin + randi() % int(viewport_rect.x - 2 * margin),
+				margin + randi() % int(viewport_rect.y - 2 * margin)
+			)
+
+			valid_position = true
+			for existing_task in tasks:
+				if task_spawn_pos.distance_to(existing_task.position) < min_distance:
+					valid_position = false
+					break
+
+		task.position = task_spawn_pos
 		tasks.append(task)
 		add_child(task)
-		
-		var task_spawn_pos := Vector2(
-			randi() % int(viewport_rect.x - 30),
-			randi() % int(viewport_rect.y)
-		)
-		task.position = task_spawn_pos

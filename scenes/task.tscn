@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/Task.gd" id="1_s4nxf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2jxyq"]
+radius = 30.0
 
 [node name="Task" type="Node2D"]
 script = ExtResource("1_s4nxf")

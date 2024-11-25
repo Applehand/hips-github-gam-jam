@@ -3,7 +3,6 @@ class_name Task
 
 @export var task_name: String
 @export var duration: float = 3.0
-@export var location: Vector2
 @export var task_type: String
 
 var is_completed: bool
