@@ -6,7 +6,7 @@ class_name NpcAgent
 @onready var avoidance_range: Area2D = $AvoidanceRange
 
 @export var move_speed: float = 100.0
-@export var avoidance_strength: float = 20
+@export var avoidance_strength: float = 23
 
 var char_name: String
 var current_task: Task = null
