@@ -32,5 +32,5 @@ vertical_alignment = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AvoidanceRange"]
 shape = SubResource("CircleShape2D_ja88l")
 
-[connection signal="body_entered" from="AvoidanceRange" to="." method="_on_body_entered"]
-[connection signal="body_exited" from="AvoidanceRange" to="." method="_on_body_exited"]
+[connection signal="body_entered" from="AvoidanceRange" to="." method="_on_avoidance_range_body_entered"]
+[connection signal="body_exited" from="AvoidanceRange" to="." method="_on_avoidance_range_body_exited"]

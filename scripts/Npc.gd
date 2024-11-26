@@ -6,10 +6,11 @@ class_name NpcAgent
 @onready var avoidance_range: Area2D = $AvoidanceRange
 
 @export var move_speed: float = 100.0
-@export var task_radius: float = 10.0
+@export var avoidance_strength: float = 20
 
 var char_name: String
 var current_task: Task = null
+var npcs_in_avoidance_range: Array[NpcAgent] = []
 var is_moving_to_task: bool = false
 
 func assign_task(task: Task):
@@ -21,19 +22,42 @@ func assign_task(task: Task):
 		is_moving_to_task = true
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if current_task and is_moving_to_task:
-		move_to_task(delta)
+		move_to_task()
 
 
-func move_to_task(delta):
-	if current_task:
-		var direction = (current_task.position - position).normalized()
-		velocity = direction * move_speed
+func move_to_task():
+	var sep_dist_x: float = 0.0
+	var sep_dist_y: float = 0.0
 
-		if position.distance_to(current_task.position) <= task_radius:
-			velocity = Vector2.ZERO
-			is_moving_to_task = false
-			current_task.start_task()
+	for npc in npcs_in_avoidance_range:
+		var dist_vector = position - npc.position
+		var distance = dist_vector.length()
+		if distance > 0:
+			var normalized_dist = dist_vector.normalized()
+			sep_dist_x += normalized_dist.x / distance
+			sep_dist_y += normalized_dist.y / distance
 
-		move_and_slide()
+	var separation_force = Vector2(sep_dist_x, sep_dist_y) * avoidance_strength
+
+	var task_direction = (current_task.position - position).normalized()
+
+	velocity = (task_direction + separation_force).normalized() * move_speed
+
+	if position.distance_to(current_task.position) <= current_task.radius:
+		velocity = Vector2.ZERO
+		is_moving_to_task = false
+		current_task.start_task()
+
+	move_and_slide()
+
+
+func _on_avoidance_range_body_entered(body: Node2D) -> void:
+	if body is NpcAgent and body != self:
+		npcs_in_avoidance_range.append(body)
+
+
+func _on_avoidance_range_body_exited(body: Node2D) -> void:
+	if body is NpcAgent:
+		npcs_in_avoidance_range.erase(body)

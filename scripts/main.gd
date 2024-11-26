@@ -105,7 +105,6 @@ func spawn_tasks(count: int = 1):
 		add_child(task)
 
 
-
 func assign_task_to_npc(npc: NpcAgent):
 	for task in tasks:
 		if not task.is_completed and not task.is_in_progress:
@@ -119,7 +118,7 @@ func _on_task_completed(task: Task):
 	tasks.erase(task)
 	task.queue_free()
 
-	spawn_tasks(1)
+	spawn_tasks()
 
 	for npc in npcs:
 		if npc.current_task == task:
