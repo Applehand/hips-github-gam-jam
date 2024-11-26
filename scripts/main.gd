@@ -13,7 +13,7 @@ var available_character_names = []
 @onready var game_timer: Timer = $GameTimer
 @onready var game_timer_label: Label = $CanvasLayer/Control/GameTimerLabel
 
-
+@export var game_time_limit: float = 15.0
 @export var num_npcs: int = 5
 @export var num_tasks: int = 8
 @export var task_spawn_margin = 35
@@ -25,9 +25,11 @@ var viewport_rect: Vector2
 
 @onready var npc_scene: PackedScene = preload("res://scenes/npc_agent.tscn")
 @onready var task_scene: PackedScene = preload("res://scenes/task.tscn")
+@onready var imposter_scene: PackedScene = preload("res://scenes/imposter.tscn")
 
 
 func _ready() -> void:
+	game_timer.wait_time = game_time_limit
 	viewport_rect = get_viewport_rect().size
 	reset_available_character_names()
 
@@ -48,8 +50,14 @@ func _on_button_pressed() -> void:
 
 
 func spawn_npcs() -> void:
+	var imposter_index = randi() % num_npcs
+	
 	for i in range(num_npcs):
-		var npc: NpcAgent = npc_scene.instantiate()
+		var npc: NpcAgent
+		if i == imposter_index:
+			npc = imposter_scene.instantiate()
+		else:
+			npc = npc_scene.instantiate()
 		npc.current_task = tasks.pick_random()
 
 		if available_character_names.size() > 0:
@@ -126,7 +134,7 @@ func _on_game_timer_timeout() -> void:
 
 	reset_available_character_names()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if game_timer.is_stopped():
 		game_timer_label.text = "FIND THE IMPOSTER!"
 	else:

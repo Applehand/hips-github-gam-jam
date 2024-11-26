@@ -4,6 +4,7 @@
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_0u1bh")
+game_time_limit = 30.0
 num_npcs = 25
 num_tasks = 30
 
@@ -26,6 +27,7 @@ offset_top = 60.0
 offset_right = 23.0
 offset_bottom = 23.0
 grow_horizontal = 2
+theme_override_font_sizes/font_size = 24
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -45,7 +47,6 @@ grow_vertical = 2
 text = "Start"
 
 [node name="GameTimer" type="Timer" parent="."]
-wait_time = 15.0
 one_shot = true
 
 [connection signal="pressed" from="CanvasLayer/Control/Button" to="." method="_on_button_pressed"]
