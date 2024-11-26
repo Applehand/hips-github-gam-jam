@@ -13,6 +13,16 @@ var current_task: Task = null
 var npcs_in_avoidance_range: Array[NpcAgent] = []
 var is_moving_to_task: bool = false
 
+
+func _input_event(viewport: Viewport, event: InputEvent, shape_idx: int) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == 1:
+			print(self.char_name, " killed!")
+		
+		if event.button_index == 2:
+			print(self.char_name, " cleared!")
+
+
 func assign_task(task: Task):
 	if task == null:
 		current_task = null
