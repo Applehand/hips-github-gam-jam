@@ -11,6 +11,8 @@ var available_character_names = []
 
 @onready var start_button: Button = $CanvasLayer/Control/Button
 @onready var game_timer: Timer = $GameTimer
+@onready var game_timer_label: Label = $CanvasLayer/Control/GameTimerLabel
+
 
 @export var num_npcs: int = 5
 @export var num_tasks: int = 8
@@ -50,7 +52,6 @@ func spawn_npcs() -> void:
 		var npc: NpcAgent = npc_scene.instantiate()
 		npc.current_task = tasks.pick_random()
 
-		# Assign a random name from the available names
 		if available_character_names.size() > 0:
 			var random_index = randi() % available_character_names.size()
 			var assigned_name = available_character_names.pop_at(random_index)
@@ -124,3 +125,9 @@ func _on_game_timer_timeout() -> void:
 	tasks.clear()
 
 	reset_available_character_names()
+
+func _process(delta: float) -> void:
+	if game_timer.is_stopped():
+		game_timer_label.text = "FIND THE IMPOSTER!"
+	else:
+		game_timer_label.text = "Time Left: " + str(int(game_timer.time_left))
