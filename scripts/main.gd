@@ -103,9 +103,13 @@ func spawn_npcs() -> void:
 		add_child(npc)
 		assign_task_to_npc(npc)
 
+
 func spawn_tasks(count: int = 1):
 	for i in range(count):
 		var task = task_scene.instantiate()
+
+		task.task_type = "food" if randi() % 2 == 0 else "conversation"
+
 		var task_spawn_pos: Vector2
 		var valid_position = false
 
@@ -125,14 +129,30 @@ func spawn_tasks(count: int = 1):
 		tasks.append(task)
 		add_child(task)
 
+		print("Spawned task of type: ", task.task_type, " at position: ", task.position)
+
 
 func assign_task_to_npc(npc: NpcAgent):
 	for task in tasks:
-		if not task.is_completed and not task.is_in_progress:
+		if task.task_type == "conversation" and not task.is_completed and task.participants.size() == 1:
+			npc.assign_task(task)
+			if task.participants.size() == 2:
+				task.is_in_progress = true
+				task.connect("task_completed", _on_task_completed)
+			return
+
+	for task in tasks:
+		if task.task_type == "food" and not task.is_completed and task.participants.size() == 0:
 			npc.assign_task(task)
 			task.is_in_progress = true
 			task.connect("task_completed", _on_task_completed)
-			break
+			return
+		elif task.task_type == "conversation" and not task.is_completed and task.participants.size() < 2:
+			npc.assign_task(task)
+			if task.participants.size() == 2:
+				task.is_in_progress = true
+				task.connect("task_completed", _on_task_completed)
+			return
 
 
 func _on_task_completed(task: Task):

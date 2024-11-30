@@ -10,6 +10,9 @@ class_name Task
 var is_completed: bool = false
 var is_in_progress: bool = false
 var radius: float
+var task_type: String
+var participants: Array[NpcAgent] = []
+
 
 signal task_started
 signal task_completed
@@ -19,11 +22,22 @@ func _ready() -> void:
 	timer.connect("timeout", _on_task_timeout)
 	radius = collision_shape.shape.radius
 
+
 func start_task():
 	if not is_completed:
+		if task_type == "conversation" and participants.size() < 2:
+			return
 		is_in_progress = true
 		emit_signal("task_started", self)
 		timer.start()
+
+
+func assign_participant(npc: NpcAgent):
+	if task_type == "conversation" and participants.size() < 2:
+		participants.append(npc)
+	elif task_type == "food" and participants.size() == 0:
+		participants.append(npc)
+
 
 func _on_task_timeout():
 	complete_task()

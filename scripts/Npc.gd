@@ -1,7 +1,6 @@
 extends CharacterBody2D
 class_name NpcAgent
 
-@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var label: Label = $Label
 @onready var avoidance_range: Area2D = $AvoidanceRange
@@ -28,8 +27,12 @@ func assign_task(task: Task):
 		current_task = null
 		is_moving_to_task = false
 	else:
+		if task.task_type == "conversation" and task.participants.size() >= 2:
+			return
 		current_task = task
 		is_moving_to_task = true
+		task.assign_participant(self)
+
 
 
 func _physics_process(_delta):
