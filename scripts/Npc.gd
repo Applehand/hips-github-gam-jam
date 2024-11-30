@@ -1,6 +1,7 @@
 extends CharacterBody2D
 class_name NpcAgent
 
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var label: Label = $Label
 @onready var avoidance_range: Area2D = $AvoidanceRange
@@ -12,7 +13,6 @@ var char_name: String
 var current_task: Task = null
 var npcs_in_avoidance_range: Array[NpcAgent] = []
 var is_moving_to_task: bool = false
-
 
 func _input_event(viewport: Viewport, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
