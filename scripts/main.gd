@@ -9,6 +9,23 @@ var all_character_names = [
 
 var available_character_names = []
 
+var textures = [
+	"res://assets/Sprites/NPCsprites/NPCblue.png",
+	"res://assets/Sprites/NPCsprites/NPCdarkblue.png",
+	"res://assets/Sprites/NPCsprites/NPCdarkpurple.png", 
+	"res://assets/Sprites/NPCsprites/NPCgreen.png",
+	"res://assets/Sprites/NPCsprites/NPClightblue.png",
+	"res://assets/Sprites/NPCsprites/NPClightgreen.png",
+	"res://assets/Sprites/NPCsprites/NPClightgrey.png",
+	"res://assets/Sprites/NPCsprites/NPClightpink.png",
+	"res://assets/Sprites/NPCsprites/NPClightred.png",
+	"res://assets/Sprites/NPCsprites/NPCorange.png",
+	"res://assets/Sprites/NPCsprites/NPCred.png",
+	"res://assets/Sprites/NPCsprites/NPCtan.png"
+]
+
+var available_textures = []
+
 @onready var start_button: Button = $CanvasLayer/Control/Button
 @onready var game_timer: Timer = $GameTimer
 @onready var game_timer_label: Label = $CanvasLayer/Control/GameTimerLabel
@@ -18,6 +35,7 @@ var available_character_names = []
 @export var num_tasks: int = 8
 @export var task_spawn_margin = 35
 @export var task_spawn_min_distance = 75
+@export var num_textures = 12
 
 var tasks: Array[Task] = []
 var npcs: Array[NpcAgent] = []
@@ -32,7 +50,7 @@ func _ready() -> void:
 	game_timer.wait_time = game_time_limit
 	viewport_rect = get_viewport_rect().size
 	reset_available_character_names()
-
+	available_textures = textures.duplicate()
 
 func reset_available_character_names() -> void:
 	available_character_names = all_character_names.duplicate()
@@ -66,6 +84,15 @@ func spawn_npcs() -> void:
 			npc.char_name = assigned_name
 			npc.get_node("Label").text = assigned_name
 
+		if available_textures.size() > 0:
+			var texture_index = randi() % available_textures.size()
+			var texture_path = available_textures[texture_index]
+			var texture = load(texture_path)
+			
+			var sprite = npc.get_node("Sprite2D")
+			if sprite:
+				sprite.texture = texture
+
 		var npc_spawn_pos := Vector2(
 			randi() % int(viewport_rect.x - 10),
 			randi() % int(viewport_rect.y)
@@ -75,7 +102,6 @@ func spawn_npcs() -> void:
 		npcs.append(npc)
 		add_child(npc)
 		assign_task_to_npc(npc)
-
 
 func spawn_tasks(count: int = 1):
 	for i in range(count):
