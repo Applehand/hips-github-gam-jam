@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://ncdqe6a83iqx"]
+[gd_scene load_steps=3 format=3 uid="uid://ncdqe6a83iqx"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_0u1bh"]
+[ext_resource type="PackedScene" uid="uid://ddd6twxqxrer3" path="res://scenes/background.tscn" id="2_ctuv3"]
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_0u1bh")
@@ -49,6 +50,8 @@ text = "Start"
 
 [node name="GameTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="Background" parent="." instance=ExtResource("2_ctuv3")]
 
 [connection signal="pressed" from="CanvasLayer/Control/Button" to="." method="_on_button_pressed"]
 [connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]
